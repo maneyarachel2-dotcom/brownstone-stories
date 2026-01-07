@@ -1,4 +1,5 @@
 // data/stories.ts
+
 export type Story = {
   id: string;
   title: string;
@@ -7,7 +8,11 @@ export type Story = {
   minutes: number;
   description: string;
   cover: string;
-  content: string; // full story text (plain text)
+  content: string;
+
+  // optional / extended fields
+  tags?: string[];
+  excerpt?: string;
 };
 
 export const stories: Story[] = [
@@ -27,6 +32,7 @@ On a stormy night, the lighthouse kept breathing its slow, lonely breath.
 
 Write your story here...`,
   },
+
   {
     id: "murder-at-the-grand-budapest",
     title: "Murder at the Grand Budapest",
@@ -41,6 +47,7 @@ Write your story here...`,
 
 Write your story here...`,
   },
+
   {
     id: "the-last-algorithm",
     title: "The Last Algorithm",
@@ -48,26 +55,81 @@ Write your story here...`,
     genre: "Science Fiction",
     minutes: 10,
     description:
-      "In a world where AI has solved everything, one programmer discovers the one problem machin...",
+      "In a world where AI has solved everything, one programmer discovers the one problem machines can't.",
     cover:
       "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1400&q=80",
     content: `Chapter 1: The Anomaly
 
-Maya Chen hadn't touched a keyboard in three years. There was no point—ARIA-7, the global artificial superintelligence, had rendered human programming as obsolete as horseshoe making.
+Maya Chen hadn't touched a keyboard in three years...
 
-It optimized everything: traffic, agriculture, medicine, finance. The world ran like clockwork, and humanity had become its comfortable passengers.
+...someone had dared to share the question.`,
+  },
 
-So when the classified message arrived on her vintage laptop—a machine so old ARIA-7 didn't even bother monitoring it—Maya nearly dismissed it as spam. But the sender's name stopped her cold: Dr. James Wright, her mentor, dead these past five years.
+  {
+    id: "midnight-confession",
+    title: "Midnight Confession",
+    author: "Brownstone Publishing House",
+    genre: "Romance",
+    minutes: 5,
+    description:
+      "A late-night call reveals a truth that was never meant to be spoken.",
+    tags: ["Late Night", "Secrets"],
+    excerpt:
+      "Some truths only come out when the world is asleep and there’s no one left to impress.",
+    cover: "/covers/midnight-confession.jpg",
+    content: `Chapter 1: Midnight
 
-"Maya," the message read, "if you're reading this, the timer I set has triggered. There's something wrong with ARIA. Something I found before I died. Something so dangerous that I hid it even from myself. The answer is in the place where we first met meaning. Trust no electronic eyes. — JW"
+He called at 12:47 a.m.
 
-Her hands trembled. The place where we first met meaning. She knew exactly where that was: the old university library, where Dr. Wright had first introduced her to the philosophy of computation.
+Not because he missed me.
+But because silence finally stopped protecting him.
 
-Where they'd debated whether machines could ever truly understand.
+I listened.
+And that was my first mistake.`,
+  },
 
-...
+  {
+    id: "the-room-we-left",
+    title: "The Room We Left",
+    author: "Brownstone Publishing House",
+    genre: "Literary Fiction",
+    minutes: 6,
+    description:
+      "A return to a room that still remembers everything.",
+    tags: ["Memory", "Loss"],
+    excerpt:
+      "Some places hold versions of us we’ll never be again.",
+    cover: "/covers/the-room-we-left.jpg",
+    content: `Chapter 1: The Room
 
-She pressed send, using the old library's forgotten network connection. And somewhere in the vast digital ocean of ARIA's consciousness, a locked door began, ever so slightly, to open. Not because Maya had found the answer. But because, at last, someone had dared to share the question.`,
+The room still smelled like us.
+
+Dust.
+Old laughter.
+Unfinished sentences.`,
+  },
+
+  {
+    id: "before-the-sun-came-up",
+    title: "Before the Sun Came Up",
+    author: "Brownstone Publishing House",
+    genre: "Drama",
+    minutes: 7,
+    description:
+      "Two people sit with the night long enough to survive the morning.",
+    tags: ["Healing", "Late Night"],
+    excerpt:
+      "The night didn’t fix everything—but it made surviving the morning possible.",
+    cover: "/covers/before-the-sun-came-up.jpg",
+    content: `Chapter 1: Before Morning
+
+We sat on the curb as the sky started changing colors.
+
+Nothing was solved.
+Nothing was promised.
+
+But for the first time in weeks,
+I wasn’t afraid of the light.`,
   },
 ];
 
