@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { Story } from "@/data/stories";
 
 type Comment = { id: string; rating: number; text: string; createdAt: string };
@@ -22,28 +22,18 @@ function minutesToRead(text: string) {
   return Math.max(1, Math.round(words / 180));
 }
 
-/**
- * Creates a TOC by finding "Chapter X: Title" lines.
- * Works with your current `content: string`.
- */
+/** Creates a TOC by finding "Chapter X: Title" lines. */
 function buildToc(content: string) {
   const lines = content.split("\n");
   const chapters: { label: string; index: number }[] = [];
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i].trim();
-    // matches: "Chapter 1: The Letter" or "Chapter 12: Something"
     if (/^Chapter\s+\d+\s*:/i.test(line)) {
       chapters.push({ label: line, index: i });
     }
   }
-
-  // If no chapter headings exist, fallback to a single “Story”
-  if (chapters.length === 0) {
-    return [{ label: "Story", index: 0 }];
-  }
-
-  return chapters;
+  return chapters.length ? chapters : [{ label: "Story", index: 0 }];
 }
 
 export default function ReaderClient({ story }: { story: Story }) {
@@ -60,7 +50,6 @@ export default function ReaderClient({ story }: { story: Story }) {
   const lines = useMemo(() => story.content.split("\n"), [story.content]);
   const toc = useMemo(() => buildToc(story.content), [story.content]);
 
-  // For rendering: keep your paragraph splitting (blank line = new paragraph)
   const paragraphs = useMemo(
     () =>
       story.content
@@ -130,15 +119,12 @@ export default function ReaderClient({ story }: { story: Story }) {
   }
 
   function jumpToChapter(lineIndex: number) {
-    // Find the first element that contains that line text (best-effort)
-    // We’ll scroll to top if we can’t locate it precisely.
     const targetText = (lines[lineIndex] || "").trim();
     if (!targetText) {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
     }
 
-    // Try to find an element in the article that contains the chapter heading
     const nodes = document.querySelectorAll("[data-reader-paragraph]");
     let found: Element | null = null;
 
@@ -163,24 +149,25 @@ export default function ReaderClient({ story }: { story: Story }) {
       </div>
 
       {/* top bar */}
-      <div className="sticky top-0 z-40 border-b border-black/10 bg-[#fbf7f1]/80 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center gap-3 px-5 py-3">
+      <div className="sticky top-0 z-40 border-b border-black/10 bg-[#fbf7f1]/85 backdrop-blur">
+        <div className="mx-auto flex max-w-5xl items-center gap-2 px-3 sm:px-5 py-2 sm:py-3">
+          {/* Back: mobile shows “Library” only */}
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-black/70 hover:bg-black/5"
+            className="inline-flex shrink-0 items-center gap-2 rounded-xl px-2 sm:px-3 py-2 text-sm text-black/70 hover:bg-black/5"
           >
-            ← Back to Library
+            ← <span className="hidden sm:inline">Back to </span>Library
           </Link>
 
           <div className="flex-1 text-center">
-            <div className="truncate font-serif text-sm font-semibold">
+            <div className="truncate font-serif text-xs sm:text-sm font-semibold">
               {story.title.toUpperCase()}
             </div>
           </div>
 
           {/* RIGHT SIDE: progress + hamburger */}
           <div className="flex items-center gap-2">
-            <span className="rounded-full bg-[#f3e6d6] px-3 py-1 text-xs font-semibold text-[#7a3f0a]">
+            <span className="rounded-full bg-[#f3e6d6] px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-semibold text-[#7a3f0a]">
               {Math.round(progress * 100)}%
             </span>
 
@@ -204,19 +191,19 @@ export default function ReaderClient({ story }: { story: Story }) {
       </div>
 
       {/* page header */}
-      <div className="mx-auto max-w-3xl px-6 pt-12">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 pt-10 sm:pt-12">
         <div className="mx-auto mb-4 w-fit rounded-full bg-[#f3e6d6] px-4 py-1 text-[11px] font-semibold tracking-wide text-[#7a3f0a]">
           {story.genre.toUpperCase()}
         </div>
 
-        <h1 className="text-center font-serif text-5xl font-semibold leading-tight">
+        <h1 className="text-center font-serif font-semibold leading-[1.05] text-4xl sm:text-5xl md:text-6xl">
           {story.title}
         </h1>
 
         <p className="mt-3 text-center text-sm text-black/60">by {story.author}</p>
         <p className="mt-2 text-center text-xs text-black/45">{mins} min read</p>
 
-        <div className="mx-auto mt-8 flex max-w-xs items-center gap-3">
+        <div className="mx-auto mt-7 sm:mt-8 flex max-w-xs items-center gap-3">
           <div className="h-px flex-1 bg-black/10" />
           <div className="h-2 w-2 rounded-full bg-[#a85a12]" />
           <div className="h-px flex-1 bg-black/10" />
@@ -224,14 +211,17 @@ export default function ReaderClient({ story }: { story: Story }) {
       </div>
 
       {/* reading area */}
-      <article className="mx-auto max-w-3xl px-6 pb-10 pt-10">
+      <article className="mx-auto max-w-3xl px-4 sm:px-6 pb-10 pt-8 sm:pt-10">
         <div className="leading-relaxed">
           {paragraphs.map((p, i) => (
             <p
               key={i}
               data-reader-paragraph
-              className="mx-auto mb-6 max-w-2xl whitespace-pre-wrap font-serif text-black/80"
-              style={{ fontSize: prefs.fontSize, lineHeight: "2.05" }}
+              className="mx-auto mb-6 max-w-[68ch] whitespace-pre-wrap font-serif text-black/80 tracking-[0.01em]"
+              style={{
+                fontSize: prefs.fontSize,
+                lineHeight: prefs.fontSize <= 18 ? "2.0" : "1.9",
+              }}
             >
               {p}
             </p>
@@ -247,8 +237,8 @@ export default function ReaderClient({ story }: { story: Story }) {
       </article>
 
       {/* comments */}
-      <section className="mx-auto max-w-3xl px-6 pb-20">
-        <div className="rounded-3xl border border-black/10 bg-white p-6 shadow-sm">
+      <section className="mx-auto max-w-3xl px-4 sm:px-6 pb-20">
+        <div className="rounded-3xl border border-black/10 bg-white p-5 sm:p-6 shadow-sm">
           <h2 className="font-serif text-2xl font-semibold">Leave a Comment</h2>
           <p className="mt-2 text-sm text-black/55">
             Comments are saved on this device only (no account).
@@ -326,9 +316,7 @@ export default function ReaderClient({ story }: { story: Story }) {
                         {[1, 2, 3, 4, 5].map((n) => (
                           <span
                             key={n}
-                            className={`text-sm ${
-                              n <= c.rating ? "text-[#a85a12]" : "text-black/20"
-                            }`}
+                            className={`text-sm ${n <= c.rating ? "text-[#a85a12]" : "text-black/20"}`}
                           >
                             ★
                           </span>
@@ -423,17 +411,12 @@ export default function ReaderClient({ story }: { story: Story }) {
                     key={`${ch.index}-${idx}`}
                     onClick={() => {
                       setMenuOpen(false);
-                      // small delay so drawer closes before scrolling
                       setTimeout(() => jumpToChapter(ch.index), 80);
                     }}
                     className="w-full rounded-2xl border border-black/10 bg-white px-4 py-3 text-left hover:bg-black/5"
                   >
-                    <div className="text-sm font-semibold text-black">
-                      {ch.label}
-                    </div>
-                    <div className="mt-1 text-xs text-black/50">
-                      Jump to this chapter
-                    </div>
+                    <div className="text-sm font-semibold text-black">{ch.label}</div>
+                    <div className="mt-1 text-xs text-black/50">Jump to this chapter</div>
                   </button>
                 ))}
               </div>
