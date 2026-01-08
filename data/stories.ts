@@ -22,7 +22,7 @@ export const stories: Story[] = [
     minutes: 5,
     description:
       "On a stormy night, an old lighthouse keeper writes a letter that will change everything for a daughter...",
-    cover: "/public/covers/everyone forgot him.jpg",
+   cover: "/covers/everyone forgot him.jpg",
     content: `Chapter 1
 I woke up in a white dress.
 
@@ -66,7 +66,7 @@ And in that second, I understood something was wrong.`,
   tags: ["Second Chances", "Unspoken Love", "Timing"],
   excerpt:
     "He doesn’t look at me when he says my name. That’s how I know something is wrong.",
-  cover: "/public/covers/tomorrow-i-think.jpg",
+  cover: "/covers/tomorrow-i-think.jpg",
   content: `He doesn’t look at me when he says my name.
 
 That’s how I know something is wrong.
@@ -169,7 +169,7 @@ Tomorrow.`,
   tags: ["Childhood", "Family Secrets", "Memory"],
   excerpt:
     "I knew I had a mom. Dad told me once. He said she died. But she didn’t look dead to me.",
-  cover: "/public/covers/when the past found us.jpg",
+  cover: "/covers/when the past found us.jpg",
   content: `“This is the last episode. After this, you’re going straight to bed,” my dad says firmly, arms crossed as he stands in the doorway.
 
 I groan under my breath but stay quiet.
