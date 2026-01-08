@@ -52,12 +52,7 @@ export default function EmailSignup() {
       </form>
 
       <div className="mt-4 text-center">
-        <a
-          href={WRITER_LINK}
-          className="text-sm font-semibold text-[#7a3f0a] underline underline-offset-4 hover:text-[#5f3108]"
-        >
-          Are you a writer? Submit your work →
-        </a>
+        
       </div>
     </section>
   );
