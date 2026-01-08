@@ -15,15 +15,13 @@ export default function EmailSignup() {
       </h3>
 
       <p className="mt-3 text-center text-sm leading-relaxed text-black/60">
-        This platform is the beginning of a new publishing house.
+       Follow the journey as this publishing house comes to life.
         <br />
         <br />
-        Before the covers are printed, before the books are shelved, before the
-        world knows what this will become — you’re here.
+    
         <br />
         <br />
-        Read one story, leave a comment about what you felt — and if you want to
-        stay close as this grows, leave your email below.
+       
       </p>
 
       <form
