@@ -230,11 +230,13 @@ export default function ReaderClient({ story }: { story: Story }) {
         </div>
 
         {/* The End */}
+        
         <div className="mx-auto mt-10 flex max-w-md items-center gap-4 text-black/40">
           <div className="h-px flex-1 bg-black/10" />
           <div className="font-serif">The End</div>
           <div className="h-px flex-1 bg-black/10" />
         </div>
+        <EmailSignup />
       </article>
 
       {/* comments */}
