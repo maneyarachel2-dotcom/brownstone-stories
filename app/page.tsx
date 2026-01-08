@@ -69,13 +69,13 @@ export default function HomePage() {
               key={s.id}
               className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm"
             >
-              {/* Image */}
-              <div className="relative h-60 w-full bg-[#fbf7f1]">
+              {/* Image (FULL FIT) */}
+              <div className="relative w-full aspect-[3/4] bg-[#fbf7f1] overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={s.cover}
                   alt={s.title}
-                  className="h-full w-full object-contain"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
 
                 {/* Genre pill */}
@@ -83,7 +83,7 @@ export default function HomePage() {
                   {s.genre.toUpperCase()}
                 </div>
 
-                {/* Minutes chip (no emoji) */}
+                {/* Minutes chip */}
                 <div className="absolute right-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] text-black/70 backdrop-blur">
                   {s.minutes} min
                 </div>
