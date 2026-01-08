@@ -16,11 +16,7 @@ export default function EmailSignup() {
 
       <p className="mt-3 text-center text-sm leading-relaxed text-black/60">
        Follow the journey as this publishing house comes to life.
-        <br />
-        <br />
-    
-        <br />
-        <br />
+      
        
       </p>
 
