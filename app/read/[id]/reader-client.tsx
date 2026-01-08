@@ -3,6 +3,7 @@
 import Link from "next/link";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { Story } from "@/data/stories";
+import EmailSignup from "@/app/components/EmailSignup";
 
 type Comment = { id: string; rating: number; text: string; createdAt: string };
 
@@ -337,6 +338,9 @@ export default function ReaderClient({ story }: { story: Story }) {
             </div>
           </div>
         </div>
+
+
+
       </section>
 
       {/* HAMBURGER MENU DRAWER */}
