@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { Story } from "@/data/stories";
-import EmailSignup from "@/app/components/EmailSignup";
+
 
 type Comment = { id: string; rating: number; text: string; createdAt: string };
 
@@ -236,7 +236,7 @@ export default function ReaderClient({ story }: { story: Story }) {
           <div className="font-serif">The End</div>
           <div className="h-px flex-1 bg-black/10" />
         </div>
-        <EmailSignup />
+      
       </article>
 
       {/* comments */}
