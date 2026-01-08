@@ -58,7 +58,7 @@ And in that second, I understood something was wrong.`,
   {
   id: "tomorrow-i-think",
   title: "Tomorrow, I Think",
-  author: "Brownstone Publishing House",
+  author: "Rachel Maneya",
   genre: "Literary Romance",
   minutes: 6,
   description:
@@ -66,7 +66,7 @@ And in that second, I understood something was wrong.`,
   tags: ["Second Chances", "Unspoken Love", "Timing"],
   excerpt:
     "He doesn’t look at me when he says my name. That’s how I know something is wrong.",
-  cover: "/public/tomorrow-i-think.jpg",
+  cover: "/public/covers/tomorrow-i-think.jpg",
   content: `He doesn’t look at me when he says my name.
 
 That’s how I know something is wrong.
