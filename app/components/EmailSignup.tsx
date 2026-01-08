@@ -1,12 +1,11 @@
 "use client";
 
 export default function EmailSignup() {
-  // ✅ Replace with your ConvertKit form action URL
-  // Example format: https://app.convertkit.com/forms/123456/subscriptions
-  const CONVERTKIT_ACTION_URL = "https://brownstone-publishing-house.kit.com/20cb77ba1e";
+  // ✅ Use ONLY the form action URL (no <script> tags)
+  const CONVERTKIT_ACTION_URL = "https://app.kit.com/forms/8950379/subscriptions";
 
-  // ✅ Replace with your writer/submission link (optional)
-  const WRITER_LINK = "/"; // change later to /submit or /writers
+  // Optional
+  const WRITER_LINK = "/";
 
   return (
     <section className="mx-auto mt-10 max-w-2xl rounded-3xl border border-black/10 bg-white p-6 shadow-sm">
@@ -15,9 +14,7 @@ export default function EmailSignup() {
       </h3>
 
       <p className="mt-3 text-center text-sm leading-relaxed text-black/60">
-       Follow the journey as this publishing house comes to life.
-      
-       
+        Follow the journey as this publishing house comes to life.
       </p>
 
       <form
@@ -25,7 +22,11 @@ export default function EmailSignup() {
         method="post"
         className="mx-auto mt-5 flex max-w-md flex-col gap-3"
       >
+        {/* ConvertKit usually expects this */}
         <input type="hidden" name="utf8" value="✓" />
+
+        {/* Optional: send them back to your site after subscribing */}
+        {/* <input type="hidden" name="redirect_to" value="https://YOURDOMAIN.com/thanks" /> */}
 
         <input
           type="email"
@@ -47,9 +48,17 @@ export default function EmailSignup() {
         </p>
       </form>
 
+      {/* Optional link */}
+      {/* 
       <div className="mt-4 text-center">
-        
+        <a
+          href={WRITER_LINK}
+          className="text-sm font-semibold text-[#7a3f0a] underline underline-offset-4 hover:text-[#5f3108]"
+        >
+          Are you a writer? Submit your work →
+        </a>
       </div>
+      */}
     </section>
   );
 }
