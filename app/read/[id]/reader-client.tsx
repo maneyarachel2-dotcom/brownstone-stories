@@ -4,10 +4,23 @@ import Link from "next/link";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import type { Story } from "@/data/stories";
 
+type Comment = {
+  id: string;
+  rating: number; // 1-5 (0 if null from db)
+  text: string;
+  createdAt: string; // ISO
+};
 
-type Comment = { id: string; rating: number; text: string; createdAt: string };
+// shape coming back from /api/comments (Supabase rows)
+type DbRow = {
+  id: number;
+  story_id: string;
+  name: string | null;
+  body: string;
+  rating: number | null;
+  created_at: string;
+};
 
-const commentKey = (id: string) => `brownstone_comments__${id}`;
 const prefsKey = `brownstone_reader_prefs__v3`;
 
 type Prefs = {
@@ -45,6 +58,7 @@ export default function ReaderClient({ story }: { story: Story }) {
   const [rating, setRating] = useState(0);
   const [prefs, setPrefs] = useState<Prefs>({ fontSize: 18 });
   const [progress, setProgress] = useState(0);
+  const [loadingComments, setLoadingComments] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -62,10 +76,45 @@ export default function ReaderClient({ story }: { story: Story }) {
 
   const mins = useMemo(() => minutesToRead(story.content), [story.content]);
 
-  // load comments
+  // -------------------------
+  // SUPABASE COMMENTS: LOAD
+  // -------------------------
   useEffect(() => {
-    const raw = localStorage.getItem(commentKey(story.id));
-    setComments(raw ? JSON.parse(raw) : []);
+    let cancelled = false;
+
+    async function load() {
+      setLoadingComments(true);
+      try {
+        const res = await fetch(
+          `/api/comments?story_id=${encodeURIComponent(story.id)}`,
+          { cache: "no-store" }
+        );
+        const data = await res.json();
+
+        if (!res.ok) {
+          console.error("Failed to load comments:", data);
+          return;
+        }
+
+        const mapped: Comment[] = (data as DbRow[]).map((r) => ({
+          id: String(r.id),
+          rating: r.rating ?? 0,
+          text: r.body,
+          createdAt: r.created_at,
+        }));
+
+        if (!cancelled) setComments(mapped);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        if (!cancelled) setLoadingComments(false);
+      }
+    }
+
+    load();
+    return () => {
+      cancelled = true;
+    };
   }, [story.id]);
 
   // load prefs
@@ -96,27 +145,49 @@ export default function ReaderClient({ story }: { story: Story }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  function saveComments(next: Comment[]) {
-    setComments(next);
-    localStorage.setItem(commentKey(story.id), JSON.stringify(next));
-  }
-
-  function add(e: React.FormEvent) {
+  // -------------------------
+  // SUPABASE COMMENTS: POST
+  // -------------------------
+  async function add(e: React.FormEvent) {
     e.preventDefault();
     if (!text.trim()) return textareaRef.current?.focus();
     if (rating === 0) return;
 
-    const c: Comment = {
-      id: crypto.randomUUID(),
-      rating,
-      text: text.trim(),
-      createdAt: new Date().toISOString(),
-    };
+    try {
+      const res = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          story_id: story.id,
+          body: text.trim(),
+          rating,
+          // name: null, // if you later add a name field
+        }),
+      });
 
-    saveComments([c, ...comments]);
-    setText("");
-    setRating(0);
-    textareaRef.current?.focus();
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error("Failed to post comment:", data);
+        alert("Failed to post comment. Check the console for details.");
+        return;
+      }
+
+      const newComment: Comment = {
+        id: String((data as DbRow).id),
+        rating: (data as DbRow).rating ?? 0,
+        text: (data as DbRow).body,
+        createdAt: (data as DbRow).created_at,
+      };
+
+      setComments((prev) => [newComment, ...prev]);
+      setText("");
+      setRating(0);
+      textareaRef.current?.focus();
+    } catch (err) {
+      console.error(err);
+      alert("Network error posting comment.");
+    }
   }
 
   function jumpToChapter(lineIndex: number) {
@@ -230,13 +301,11 @@ export default function ReaderClient({ story }: { story: Story }) {
         </div>
 
         {/* The End */}
-        
         <div className="mx-auto mt-10 flex max-w-md items-center gap-4 text-black/40">
           <div className="h-px flex-1 bg-black/10" />
           <div className="font-serif">The End</div>
           <div className="h-px flex-1 bg-black/10" />
         </div>
-      
       </article>
 
       {/* comments */}
@@ -244,7 +313,7 @@ export default function ReaderClient({ story }: { story: Story }) {
         <div className="rounded-3xl border border-black/10 bg-white p-5 sm:p-6 shadow-sm">
           <h2 className="font-serif text-2xl font-semibold">Leave a Comment</h2>
           <p className="mt-2 text-sm text-black/55">
-            Comments are saved on this device only (no account).
+            Comments are public and saved online (no account).
           </p>
 
           <form onSubmit={add} className="mt-5 grid gap-3">
@@ -266,9 +335,7 @@ export default function ReaderClient({ story }: { story: Story }) {
                   </button>
                 ))}
               </div>
-              <div className="text-xs text-black/50">
-                {rating ? `${rating}/5` : "Rate this story"}
-              </div>
+              <div className="text-xs text-black/50">{rating ? `${rating}/5` : "Rate this story"}</div>
             </div>
 
             <textarea
@@ -292,19 +359,21 @@ export default function ReaderClient({ story }: { story: Story }) {
             </div>
 
             {rating === 0 && text.trim().length > 0 && (
-              <p className="text-xs text-black/50">
-                Please select a rating before posting.
-              </p>
+              <p className="text-xs text-black/50">Please select a rating before posting.</p>
             )}
           </form>
 
           <div className="mt-8">
             <div className="text-xs tracking-widest text-black/40">
-              {comments.length} COMMENTS
+              {loadingComments ? "LOADING..." : `${comments.length} COMMENTS`}
             </div>
 
             <div className="mt-4 grid gap-3">
-              {comments.length === 0 ? (
+              {loadingComments ? (
+                <div className="rounded-2xl border border-black/10 bg-[#fbf7f1] p-6 text-center text-sm text-black/55">
+                  Loading comments...
+                </div>
+              ) : comments.length === 0 ? (
                 <div className="rounded-2xl border border-black/10 bg-[#fbf7f1] p-6 text-center text-sm text-black/55">
                   Be the first to share your thoughts!
                 </div>
@@ -319,7 +388,9 @@ export default function ReaderClient({ story }: { story: Story }) {
                         {[1, 2, 3, 4, 5].map((n) => (
                           <span
                             key={n}
-                            className={`text-sm ${n <= c.rating ? "text-[#a85a12]" : "text-black/20"}`}
+                            className={`text-sm ${
+                              n <= c.rating ? "text-[#a85a12]" : "text-black/20"
+                            }`}
                           >
                             ★
                           </span>
@@ -331,18 +402,13 @@ export default function ReaderClient({ story }: { story: Story }) {
                       </span>
                     </div>
 
-                    <p className="mt-2 text-sm leading-relaxed text-black/70">
-                      {c.text}
-                    </p>
+                    <p className="mt-2 text-sm leading-relaxed text-black/70">{c.text}</p>
                   </div>
                 ))
               )}
             </div>
           </div>
         </div>
-
-
-
       </section>
 
       {/* HAMBURGER MENU DRAWER */}
