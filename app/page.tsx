@@ -24,7 +24,17 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-[#fbf7f1] text-[#1f1b16]">
-      <div className="mx-auto max-w-6xl px-6 pb-20 pt-14">
+      {/* TOP RIGHT NAV */}
+      <header className="mx-auto max-w-6xl px-6 pt-6 flex justify-end">
+        <Link
+          href="/community"
+          className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-black/70 hover:bg-black/5"
+        >
+          Writing Community
+        </Link>
+      </header>
+
+      <div className="mx-auto max-w-6xl px-6 pb-20 pt-10">
         {/* Heading */}
         <div className="text-center">
           <h1 className="font-serif text-5xl font-semibold tracking-tight">
