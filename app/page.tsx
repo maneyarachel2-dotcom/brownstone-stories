@@ -24,15 +24,15 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-[#fbf7f1] text-[#1f1b16]">
-      {/* Writing Community link */}
-      <div className="relative z-50 mx-auto max-w-6xl px-6 pt-6 flex justify-end">
+      {/* TOP RIGHT NAV */}
+      <header className="mx-auto max-w-6xl px-6 pt-6 flex justify-end">
         <Link
           href="/community"
-          className="rounded-full bg-[#a85a12] px-4 py-2 text-sm font-semibold text-white hover:bg-[#8f4c10]"
+          className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-black/70 hover:bg-black/5"
         >
           Writing Community
         </Link>
-      </div>
+      </header>
 
       <div className="mx-auto max-w-6xl px-6 pb-20 pt-10">
         {/* Heading */}
@@ -79,19 +79,22 @@ export default function HomePage() {
               key={s.id}
               className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm"
             >
-              {/* Image */}
+              {/* Image (FULL FIT) */}
               <div className="relative w-full aspect-[3/4] bg-[#fbf7f1] overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={s.cover}
                   alt={s.title}
                   className="absolute inset-0 h-full w-full object-cover"
                 />
 
-                <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-black/70">
+                {/* Genre pill */}
+                <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold tracking-wide text-black/70 backdrop-blur">
                   {s.genre.toUpperCase()}
                 </div>
 
-                <div className="absolute right-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] text-black/70">
+                {/* Minutes chip */}
+                <div className="absolute right-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] text-black/70 backdrop-blur">
                   {s.minutes} min
                 </div>
               </div>
@@ -118,6 +121,7 @@ export default function HomePage() {
           ))}
         </section>
 
+        {/* Footer note */}
         <div className="mt-12 text-center text-sm text-black/50">
           Showing {filtered.length} of {stories.length} stories
         </div>
