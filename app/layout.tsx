@@ -32,3 +32,8 @@ export default function RootLayout({
     </html>
   );
 }
+import Link from "next/link";
+
+<Link href="/community" className="hover:underline">
+  Community
+</Link>
