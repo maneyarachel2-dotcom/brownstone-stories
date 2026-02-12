@@ -1,130 +1,84 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { genres, stories } from "@/data/stories";
+import { stories } from "@/data/stories";
 import Link from "next/link";
 
 export default function HomePage() {
-  const [query, setQuery] = useState("");
-  const [genre, setGenre] = useState("All Genres");
-
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return stories.filter((s) => {
-      const matchesGenre = genre === "All Genres" ? true : s.genre === genre;
-      const matchesQuery =
-        !q ||
-        s.title.toLowerCase().includes(q) ||
-        s.author.toLowerCase().includes(q) ||
-        s.genre.toLowerCase().includes(q);
-
-      return matchesGenre && matchesQuery;
-    });
-  }, [query, genre]);
-
   return (
-    <main className="min-h-screen bg-[#fbf7f1] text-[#1f1b16]">
-      {/* TOP RIGHT NAV */}
-      <header className="mx-auto max-w-6xl px-6 pt-6 flex justify-end">
-        <Link
-          href="/community"
-          className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-semibold text-black/70 hover:bg-black/5"
-        >
-          Writing Community
-        </Link>
-      </header>
+    <main className="min-h-screen bg-[#f5f3ef] text-black">
+      <div className="mx-auto max-w-6xl px-6 pt-20 pb-24">
 
-      <div className="mx-auto max-w-6xl px-6 pb-20 pt-10">
-        {/* Heading */}
-        <div className="text-center">
-          <h1 className="font-serif text-5xl font-semibold tracking-tight">
-            Discover Stories
+        {/* HEADER */}
+        <section>
+          <h1 className="text-[80px] leading-none font-extrabold tracking-tight">
+            <span className="text-[#a85a12]">SHORT </span>
+            <span className="text-black">STORIES</span>
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-sm text-black/60">
-            Immerse yourself in handcrafted tales from our curated collection of
-            short fiction
+
+          <p className="mt-6 text-3xl text-black/70">
+            Read something that moves you
           </p>
-        </div>
 
-        {/* Search + Filter Row */}
-        <div className="mx-auto mt-10 flex max-w-5xl flex-col gap-4 md:flex-row md:items-center">
-          <div className="relative flex-1">
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search by title, author, or genre..."
-              className="w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-black/20"
-            />
-          </div>
-
-          <div className="w-full md:w-56">
-            <select
-              value={genre}
-              onChange={(e) => setGenre(e.target.value)}
-              className="w-full rounded-xl border border-black/10 bg-white px-4 py-3 text-sm outline-none focus:border-black/20"
-            >
-              {genres.map((g) => (
-                <option key={g} value={g}>
-                  {g}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Cards */}
-        <section className="mx-auto mt-10 grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-3">
-          {filtered.map((s) => (
-            <article
-              key={s.id}
-              className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm"
-            >
-              {/* Image (FULL FIT) */}
-              <div className="relative w-full aspect-[3/4] bg-[#fbf7f1] overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={s.cover}
-                  alt={s.title}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-
-                {/* Genre pill */}
-                <div className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold tracking-wide text-black/70 backdrop-blur">
-                  {s.genre.toUpperCase()}
-                </div>
-
-                {/* Minutes chip */}
-                <div className="absolute right-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] text-black/70 backdrop-blur">
-                  {s.minutes} min
-                </div>
-              </div>
-
-              {/* Body */}
-              <div className="p-6">
-                <h2 className="font-serif text-2xl font-semibold leading-snug">
-                  {s.title}
-                </h2>
-                <p className="mt-2 text-sm text-black/60">by {s.author}</p>
-
-                <p className="mt-4 line-clamp-2 text-sm leading-relaxed text-black/65">
-                  {s.description}
-                </p>
-
-                <Link
-                  href={`/read/${s.id}`}
-                  className="mt-6 inline-flex w-full items-center justify-center rounded-xl bg-[#a85a12] px-5 py-3 text-sm font-semibold text-white hover:bg-[#8f4c10]"
-                >
-                  Read Story
-                </Link>
-              </div>
-            </article>
-          ))}
+          <div className="mt-10 border-t border-black/20"></div>
         </section>
 
-        {/* Footer note */}
-        <div className="mt-12 text-center text-sm text-black/50">
-          Showing {filtered.length} of {stories.length} stories
-        </div>
+        {/* STORIES */}
+        <section className="mt-14 space-y-20">
+
+          {Array.from({ length: Math.ceil(stories.length / 3) }).map(
+            (_, rowIndex) => {
+              const rowStories = stories.slice(
+                rowIndex * 3,
+                rowIndex * 3 + 3
+              );
+
+              return (
+                <div key={rowIndex}>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    {rowStories.map((s) => (
+                      <Link
+                        key={s.id}
+                        href={`/read/${s.id}`}
+                        className="group block"
+                      >
+                        {/* IMAGE */}
+                        <div className="overflow-hidden rounded-xl">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={s.cover}
+                            alt={s.title}
+                            className="h-60 w-full object-cover transition duration-500 group-hover:scale-105"
+                          />
+                        </div>
+
+                        {/* TEXT */}
+                        <div className="mt-4">
+                          <p className="text-sm text-black/50">
+                            {s.author}
+                          </p>
+
+                          <h2 className="mt-1 text-lg font-medium leading-snug transition group-hover:text-[#a85a12]">
+                            {s.title}
+                          </h2>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+
+                  {/* Divider between rows */}
+                  {rowIndex !==
+                    Math.ceil(stories.length / 3) - 1 && (
+                    <div className="mt-16 border-t border-black/20"></div>
+                  )}
+                </div>
+              );
+            }
+          )}
+
+        </section>
+
+        {/* FOOTER */}
+        
       </div>
     </main>
   );
