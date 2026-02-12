@@ -15,18 +15,144 @@ export type Story = {
 
 export const stories: Story[] = [
   {
-    id: "Everyone-Forgot-him",
-    title: "Everyone forgot him",
+    id: "The Comfort of What Always Hurt",
+    title: "The Comfort of What Always Hurt",
     author: "Rachel Maneya",
     genre: "Romance",
     minutes: 5,
     description:
       "On a stormy night, an old lighthouse keeper writes a letter that will change everything for a daughter...",
-    cover: "/covers/everyone forgot him.jpg",
+    cover: "/covers/comfort of what always hurt.png",
     content: `Chapter 1
-I woke up in a white dress...
+She didn’t mean to get used to disappointment.
 
-[TRUNCATED FOR BREVITY — keep your full original content here exactly as you had it]
+But over time, it became the safest thing she knew.
+
+In every relationship, there was a moment she could predict with painful accuracy:
+
+the pause in his voice,
+
+the sudden distance in his eyes,
+
+the slow fading of effort.
+
+It always came.
+
+And strangely, she found comfort in the pattern.
+
+At least disappointment never lied.
+
+So, when Noah came into her life - gentle, patient, promising her things she didn’t believe in -she braced herself.
+
+She didn’t show it.
+
+He thought she was calm.
+
+But inside, she was a woman holding her breath.
+
+She waited for the slip.
+
+The forgotten call.
+
+The shift in tone.
+
+The moment she’d lose him like she lost the others.
+
+And when it happened, it wasn’t dramatic.
+
+Just a Tuesday night.
+
+He said he’d pick her up at seven, and by nine she was still sitting on her couch in her dress, staring at her phone.
+
+There it was.
+
+The familiar sting.
+
+The quiet ache.
+
+The whisper in her chest saying, of course. Of course he didn’t come.
+
+Disappointment wrapped around her like an old blanket.
+
+Cold, but familiar.
+
+Heavy, but predictable.
+
+She didn’t cry.
+
+Not because she was strong,
+
+but because she was tired.
+
+This was the part she understood.
+
+This was the part she could survive.
+
+At 9:17, a knock hit the door.
+
+She froze.
+
+When she opened it, Noah stood there, breathless, eyes wild with panic.
+
+“My car died,” he said, voice cracking. “I— I ran here. I didn’t want you to think I left you hanging.”
+
+Her throat tightened.
+
+She wasn’t prepared for this part.
+
+The part where someone actually showed up.
+
+The part where disappointment was interrupted.
+
+“I thought…” she began, but the rest fell apart in her chest.
+
+“That I didn’t care?” he whispered.
+
+He stepped closer, gently cupping her face.
+
+“You don’t have to expect the worst from me.”
+
+But she did.
+
+She always did.
+
+It was how she protected herself.
+
+And yet —
+
+his thumb brushed away a tear she didn’t realize had fallen,
+
+and suddenly she hated how comforting disappointment had become.
+
+How it had trained her to accept less.
+
+How it made her flinch at kindness.
+
+“I’m trying,” she said.
+
+Her voice was barely a breath.
+
+“I know,” he replied.
+
+“And I’ll keep showing up… until you stop expecting me to disappear.”
+
+Something inside her cracked open.
+
+Not fully.
+
+Not magically.
+
+Just enough.
+
+Enough for her to let him in.
+
+Enough for hope to take one small step forward.
+
+Enough to realize that maybe the story she kept reliving wasn’t the only one she could write.
+
+For the first time in a long time, disappointment didn’t feel like home.
+
+It felt like a place she was finally ready to leave.
 `,
   },
 
