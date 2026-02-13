@@ -15,8 +15,8 @@ export type Story = {
 
 export const stories: Story[] = [
   {
-    id: "The Comfort of What Always Hurt",
-    title: "The Comfort of What Always Hurt",
+    id: "What Always Hurt",
+    title: "What Always Hurt",
     author: "Rachel Maneya",
     genre: "Romance",
     minutes: 5,
